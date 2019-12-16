@@ -88,7 +88,63 @@ class AdminControl extends REST_Controller {
     $this->response($data, REST_Controller::HTTP_OK);
   }
 
-  
+  function fechadolar_get(){
+
+    $sql = "SELECT fecha_aplica_dol FROM admin_control";
+    $data = $this->db->query( $sql )->result();
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+  function valorpetro_get(){
+
+    $sql = "SELECT mn_petro FROM admin_control";
+    $data = $this->db->query( $sql )->result();
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+  function entepetro_get(){
+
+    $sql = "SELECT tasa_de_cambio_ptr FROM admin_control";
+    $data = $this->db->query( $sql )->result();
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+  function fechapetro_get(){
+
+    $sql = "SELECT fecha_aplica_ptr FROM admin_control";
+    $data = $this->db->query( $sql )->result();
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+  function valoreuro_get(){
+
+    $sql = "SELECT mn_euro FROM admin_control";
+    $data = $this->db->query( $sql )->result();
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+  function enteeuro_get(){
+
+    $sql = "SELECT tasa_de_cambio_eur FROM admin_control";
+    $data = $this->db->query( $sql )->result();
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+  function fechaeuro_get(){
+
+    $sql = "SELECT fecha_aplica_eur FROM admin_control";
+    $data = $this->db->query( $sql )->result();
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+
+
+
+
+
+
+
+
+
 
 
 
