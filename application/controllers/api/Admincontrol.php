@@ -16,7 +16,10 @@ class AdminControl extends REST_Controller {
     $metodo = $this->post("call_back");
     $this->Mapear->n_doc = $this->Mapear->$metodo()[0]->documento;
     $data = $this->Mapear->obtener($this->post());
-    $this->response($data, REST_Controller::HTTP_OK);
+    $rs = $this->db->query( $data );
+    $val['rs'] = $rs;
+    $val['resp'] = $this->Mapear->n_doc;
+    $this->response($val, REST_Controller::HTTP_OK);
   }
 
 	function listar_get(){

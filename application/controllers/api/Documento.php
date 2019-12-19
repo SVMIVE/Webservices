@@ -40,7 +40,7 @@ class Documento extends REST_Controller {
 	 *Listar facturas por pagar Filtrado por cliente
 	 */
 	function consultardocumento_get(){
-		$nu_documento="1912160099";
+		$nu_documento="C00016194";
 		$sql = "SELECT * 
 				FROM admin_documentos
 				WHERE nu_documento='".$nu_documento."'";
@@ -57,7 +57,7 @@ class Documento extends REST_Controller {
 	 *Listar facturas por pagar Filtrado por cliente
 	 */
 	function consultardocumentodetalle_get(){
-		$nu_documento="1912160099";
+		$nu_documento="C00016194";
 		$sql = "SELECT cd_concepto,nu_renglon,nu_cantidad,mn_monto,mn_iva,pc_descuento,mn_descuento,fe_detalle,nu_documento,tp_cambio,cd_cuenta,
 					   cd_concepto_old,pc_iva,ds_concepto,mn_descuento_bf,mn_monto_bf,mn_iva_bf,tp_cambio_bf,exentos,NSujeto,NAplica,NS,moneda,mn_monto_dol,
 					   mn_iva_dol,tasa_cambio,exentos_dol,aplica_cambio,fecha_aplicacion,mn_monto_s,mn_iva_s,exentos_s,tasa_cambio_s,mn_descuento_dol,mn_monto_eur,
