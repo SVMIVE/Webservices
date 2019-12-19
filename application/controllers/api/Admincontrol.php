@@ -9,13 +9,13 @@ class AdminControl extends REST_Controller {
 	public function __construct() {
 		parent::__construct(); //Polimorfismo
     $this->load->model("MMapear", "Mapear");
-		//$this->load->database(); //Establece la conexión con Sysbase
+		$this->load->database(); //Establece la conexión con Sysbase
   }
   
   public function insertvarios_post(){
-    $call = $this->post("call_back");
-    $data[0] = call;
-    $data[1] = $this->Mapear->obtener($this->post());
+    $metodo = $this->post("call_back");
+    $n_documento = $this->Mapear->$metodo();
+    $data = $this->Mapear->obtener($this->post(),$n_documento);
     $this->response($data, REST_Controller::HTTP_OK);
   }
 
