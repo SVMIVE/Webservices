@@ -144,19 +144,32 @@ class AdminControl extends REST_Controller {
     $data = $this->db->query( $sql )->result();
     $this->response($data, REST_Controller::HTTP_OK);
   }
+  function autoincrement_post(){
 
+    $input = $this->post();
+		$usuario   = $input["usuario"];         
+    $ip        = $input["ip"];      
+    $serie     = $input["serie"];        
 
+    $sql = "EXEC sp_busca_corr_c" ;
+    $data = $this->db->query( $sql );
+   
+    $sql = "SELECT top 1 documento  FROM admin_correlativos where tipo='C' ORDER BY documento DESC" ;
+    $data = $this->db->query( $sql )->result();
 
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
+  function autoincrementseniat_post(){
 
+    $input = $this->post();
+		$serie   = $input["serie"];         
 
+    $sql = "EXEC sp_busca_seniat_c" ;
+    $data = $this->db->query( $sql );
+   
+    $sql = "SELECT top 1 seniat  FROM admin_seniat WHERE tipo='C' ORDER BY seniat DESC";
+    $data = $this->db->query( $sql )->result();
 
-
-
-
-
-
-
-
-
-
+    $this->response($data, REST_Controller::HTTP_OK);
+  }
 }

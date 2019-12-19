@@ -40,10 +40,15 @@ class Documento extends REST_Controller {
 	 *Listar facturas por pagar Filtrado por cliente
 	 */
 	function consultardocumento_get(){
-		$nu_documento="1912130001";
+		$nu_documento="1912160099";
 		$sql = "SELECT * 
 				FROM admin_documentos
 				WHERE nu_documento='".$nu_documento."'";
+
+		/*$sql = "
+		DECLARE @corre_sal VARCHAR(10)
+		EXEC  dbo.sp_serial_c @corre_sal output
+		SELECT @corre_sal";*/
 				
 		$data = $this->db->query( $sql )->result();
 		$this->response($data, REST_Controller::HTTP_OK);
@@ -52,7 +57,7 @@ class Documento extends REST_Controller {
 	 *Listar facturas por pagar Filtrado por cliente
 	 */
 	function consultardocumentodetalle_get(){
-		$nu_documento="1911250001";
+		$nu_documento="1912160099";
 		$sql = "SELECT cd_concepto,nu_renglon,nu_cantidad,mn_monto,mn_iva,pc_descuento,mn_descuento,fe_detalle,nu_documento,tp_cambio,cd_cuenta,
 					   cd_concepto_old,pc_iva,ds_concepto,mn_descuento_bf,mn_monto_bf,mn_iva_bf,tp_cambio_bf,exentos,NSujeto,NAplica,NS,moneda,mn_monto_dol,
 					   mn_iva_dol,tasa_cambio,exentos_dol,aplica_cambio,fecha_aplicacion,mn_monto_s,mn_iva_s,exentos_s,tasa_cambio_s,mn_descuento_dol,mn_monto_eur,
@@ -188,7 +193,7 @@ class Documento extends REST_Controller {
 												  fe_entrega,
 												  cd_usuario,
 												  fe_anula,
-												  cd_usuario_anula
+												  cd_usuario_anula,
 												  pc_iva,
 												  tp_serie,
 												  obs_anula,
@@ -263,7 +268,7 @@ class Documento extends REST_Controller {
 		\''.$id_pagado.'\',
 		\''.$id_contabilizado.'\',
 		\''.$nu_convenio.'\',
-		\''.$nu_dias_credito.'\',
+		  '.$nu_dias_credito.',
 		\''.$fe_vencimiento.'\',
 		\''.$fe_entrega.'\',
 		\''.$cd_usuario.'\',
@@ -274,8 +279,8 @@ class Documento extends REST_Controller {
 		\''.$obs_anula.'\',
 		\''.$fe_entrega_control.'\',
 		\''.$fe_entrega_archivo.'\',
-		\''.$tasa_desde.'\',
-		\''.$tasa_hasta.'\',
+		  '.$tasa_desde.',
+		  '.$tasa_hasta.',
 		\''.$persona.'\',
 		  '.$mn_documento_bf.',
 		  '.$mn_iva_bf.',
@@ -285,8 +290,8 @@ class Documento extends REST_Controller {
 		\''.$oficina.'\',
 		\''.$fecha_reversa.'\',
 		\''.$fecha_creacion.'\',
-		\''.$Nsujeto.'\',
-		\''.$Naplica.'\',
+		  '.$Nsujeto.',
+		  '.$Naplica.',
 		\''.$cd_usuario_cambio.'\',
 		\''.$fe_cambio.'\',
 		\''.$obs_cambio.'\',
@@ -298,38 +303,38 @@ class Documento extends REST_Controller {
 		  '.$baseimponible_dol.',
 		  '.$exentos_dol.',
 		  '.$tasa_cambio.',
-		\''.$pasajeros_nac.'\',
-		\''.$pasajeros_ext.'\',
+		  '.$pasajeros_nac.',
+		  '.$pasajeros_ext.',
 		  '.$pasajeros.',
 		\''.$aplica_cambio.'\',
 		\''.$fecha_aplicacion.'\',
 		  '.$is_tasas.',
 		\''.$nu_documento_link.'\',
 		\''.$fe_pago.'\',
-		\''.$mn_documento_s.'\',
-		\''.$baseimponible_s.'\',
-		\''.$exentos_s.'\',
-		\''.$tasa_cambio_s.'\',
+		  '.$mn_iva_s.',
+		  '.$mn_documento_s.',
+		  '.$baseimponible_s.',
+		  '.$exentos_s.',
+		  '.$tasa_cambio_s.',
 		  '.$is_descuento.',
-		\''.$mn_descuento_bf.'\',
-		\''.$mn_descuento_dol.'\',
-		\''.$pc_descuento.'\',
+		  '.$mn_descuento_bf.',
+		  '.$mn_descuento_dol.',
+		  '.$pc_descuento.',
 		\''.$cd_descuento.'\',
 		\''.$nb_descuento.'\',
-		\''.$mn_documento_bf_resp.'\',
-		\''.$mn_documento_dol_resp.'\',
+		  '.$mn_documento_bf_resp.',
+		  '.$mn_documento_dol_resp.',
 		  '.$tasa_cambio2.',
 		\''.$aplica_cambio2.'\',
 		\''.$fecha_aplicacion2.'\',
 		  '.$mn_documento_eur.',
 		  '.$mn_iva_eur.',
 		  '.$baseimponible_eur.',
-		  '.$exentos_eur.'
+		  '.$exentos_eur.',
 		\''.$moneda_fac.'\')';
 		 		
 		$this->db->query( $sql ); 
 		$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
-		
 }
 		
 		function insertardet_post(){
@@ -371,85 +376,121 @@ class Documento extends REST_Controller {
 		$baseimponible_eur = $input["baseimponible_eur"];                      
 		$exentos_eur       = $input["exentos_eur"];    	              					   		
 			
-		$sql = 'INSERT INTO dbo.admin_documentos (nu_documento,
-												  fe_documento,
-												  tp_documento,
-												  nu_seniat,
-												  cd_servicio,
-												  cd_cliente,
-												  st_documento,
-												  fe_desde,
-												  fe_hasta,
-												  cd_usuario,
-												  pc_iva,
-												  tp_serie,
-												  mn_documento_bf,
-												  mn_iva_bf,
-												  cod_terminal,
-												  baseimponible,
-												  exentos,
-												  oficina,
-												  moneda,
-												  mn_documento_dol,
-												  mn_iva_dol,
-												  baseimponible_dol,
-												  exentos_dol,
-												  tasa_cambio,
-												  pasajeros,
-												  aplica_cambio,
-												  fecha_aplicacion,
-												  is_tasas,
-												  is_descuento,
-												  tasa_cambio2,
-												  aplica_cambio2,
-												  fecha_aplicacion2,
-												  mn_documento_eur,
-												  mn_iva_eur,
-												  baseimponible_eur,
-												  exentos_eur
-												  )
-		 		VALUES (\''.$nu_documento.'\',
-						\''.$fe_documento.'\',
-						\''.$tp_documento.'\',
-						\''.$nu_seniat.'\',
-						\''.$cd_servicio.'\',
-						\''.$cd_cliente.'\',
-						\''.$st_documento.'\',
-						\''.$fe_desde.'\',
-						\''.$fe_hasta.'\',
-					    \''.$cd_usuario.'\',
-						  '.$pc_iva.',
-						\''.$tp_serie.'\',
-						  '.$mn_documento_bf.',
-						  '.$mn_iva_bf.',
-						\''.$cod_terminal.'\',
-						  '.$baseimponible.',
-						  '.$exentos.',
-						\''.$oficina.'\',
-						\''.$moneda.'\',
-						  '.$mn_documento_dol.',
-					      '.$mn_iva_dol.',
-					      '.$baseimponible_dol.',
-					      '.$exentos_dol.',
-					      '.$tasa_cambio.',
-					      '.$pasajeros.',
-					    \''.$aplica_cambio.'\',
-					    \''.$fecha_aplicacion.'\',
-					      '.$is_tasas.',
-					      '.$is_descuento.',
-					      '.$tasa_cambio2.', 
-					    \''.$aplica_cambio2.'\',
-					    \''.$fecha_aplicacion2.'\',
-					      '.$mn_documento_eur.',
-					      '.$mn_iva_eur.',
-					      '.$baseimponible_eur.',
-					      '.$exentos_eur.'
-					      )';
+		$sql = 'INSERT INTO dbo.admin_documentos (nu_documento,fe_documento,tp_documento,nu_seniat,cd_servicio,cd_cliente,st_documento,fe_desde,fe_hasta,cd_usuario,pc_iva,tp_serie,mn_documento_bf,mn_iva_bf,cod_terminal,baseimponible,exentos,oficina,moneda,mn_documento_dol,mn_iva_dol,baseimponible_dol,exentos_dol,tasa_cambio,pasajeros,aplica_cambio,fecha_aplicacion,is_tasas,is_descuento,tasa_cambio2,aplica_cambio2,fecha_aplicacion2,mn_documento_eur,mn_iva_eur,baseimponible_eur,exentos_eur)
+		 		VALUES (\''.$nu_documento.'\',\''.$fe_documento.'\',\''.$tp_documento.'\',\''.$nu_seniat.'\',\''.$cd_servicio.'\',\''.$cd_cliente.'\',\''.$st_documento.'\',\''.$fe_desde.'\',\''.$fe_hasta.'\',\''.$cd_usuario.'\','.$pc_iva.',\''.$tp_serie.'\','.$mn_documento_bf.','.$mn_iva_bf.',\''.$cod_terminal.'\','.$baseimponible.','.$exentos.',\''.$oficina.'\',\''.$moneda.'\','.$mn_documento_dol.','.$mn_iva_dol.','.$baseimponible_dol.','.$exentos_dol.','.$tasa_cambio.','.$pasajeros.',\''.$aplica_cambio.'\',\''.$fecha_aplicacion.'\','.$is_tasas.','.$is_descuento.','.$tasa_cambio2.',\''.$aplica_cambio2.'\',\''.$fecha_aplicacion2.'\','.$mn_documento_eur.','.$mn_iva_eur.','.$baseimponible_eur.','.$exentos_eur.')';
 		 		
 		$this->db->query( $sql ); 
 		$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
 		
 		
 	}
-	
+			function insertardetptro_post(){
+		$input = $this->post();
+		$nu_documento      = $input["nu_documento"];         
+		$fe_documento      = $input["fe_documento"];         
+		$tp_documento      = $input["tp_documento"];   
+		$nu_seniat         = $input["nu_seniat"]; 
+		$cd_servicio       = $input["cd_servicio"];      
+		$cd_cliente        = $input["cd_cliente"]; 
+		$st_documento      = $input["st_documento"];                      
+		$fe_desde          = $input["fe_desde"];       
+		$fe_hasta          = $input["fe_hasta"];           
+		$cd_usuario        = $input["cd_usuario"]; 
+		$pc_iva            = $input["pc_iva"];                  
+		$tp_serie          = $input["tp_serie"];                     
+		$mn_documento_bf   = $input["mn_documento_bf"];              
+		$mn_iva_bf         = $input["mn_iva_bf"];           	                              
+		$cod_terminal      = $input["cod_terminal"];                 
+		$baseimponible     = $input["baseimponible"];                      
+		$exentos           = $input["exentos"];                		
+		$oficina           = $input["oficina"];	
+		$moneda            = $input["moneda"]; 
+		$mn_documento_dol  = $input["mn_documento_dol"];                  
+		$mn_iva_dol        = $input["mn_iva_dol"]; 
+		$baseimponible_dol = $input["baseimponible_dol"];              
+		$exentos_dol       = $input["exentos_dol"];           	                              
+		$tasa_cambio       = $input["tasa_cambio"];                 
+		$pasajeros         = $input["pasajeros"];                      
+		$aplica_cambio     = $input["aplica_cambio"];                		
+		$fecha_aplicacion  = $input["fecha_aplicacion"];
+		$is_tasas          = $input["is_tasas"];
+		$is_descuento      = $input["is_descuento"];
+		$tasa_cambio2      = $input["tasa_cambio2"];                      
+		$aplica_cambio2    = $input["aplica_cambio2"];                		
+		$fecha_aplicacion2 = $input["fecha_aplicacion2"];
+		$mn_documento_eur  = $input["mn_documento_eur"];
+		$mn_iva_eur        = $input["mn_iva_eur"];
+		$baseimponible_eur = $input["baseimponible_eur"];                      
+		$exentos_eur       = $input["exentos_eur"];    	              					   		
+			
+		$sql = 'INSERT INTO dbo.admin_documentos (nu_documento,fe_documento,tp_documento,nu_seniat,cd_servicio,cd_cliente,st_documento,fe_desde,fe_hasta,cd_usuario,pc_iva,tp_serie,mn_documento_bf,mn_iva_bf,cod_terminal,baseimponible,exentos,oficina,moneda,mn_documento_dol,mn_iva_dol,baseimponible_dol,exentos_dol,tasa_cambio,pasajeros,aplica_cambio,fecha_aplicacion,is_tasas,is_descuento,tasa_cambio2,aplica_cambio2,fecha_aplicacion2,mn_documento_eur,mn_iva_eur,baseimponible_eur,exentos_eur)
+		 		VALUES (\''.$nu_documento.'\',\''.$fe_documento.'\',\''.$tp_documento.'\',\''.$nu_seniat.'\',\''.$cd_servicio.'\',\''.$cd_cliente.'\',\''.$st_documento.'\',\''.$fe_desde.'\',\''.$fe_hasta.'\',\''.$cd_usuario.'\','.$pc_iva.',\''.$tp_serie.'\','.$mn_documento_bf.','.$mn_iva_bf.',\''.$cod_terminal.'\','.$baseimponible.','.$exentos.',\''.$oficina.'\',\''.$moneda.'\','.$mn_documento_dol.','.$mn_iva_dol.','.$baseimponible_dol.','.$exentos_dol.','.$tasa_cambio.','.$pasajeros.',\''.$aplica_cambio.'\',\''.$fecha_aplicacion.'\','.$is_tasas.','.$is_descuento.','.$tasa_cambio2.',\''.$aplica_cambio2.'\',\''.$fecha_aplicacion2.'\','.$mn_documento_eur.','.$mn_iva_eur.','.$baseimponible_eur.','.$exentos_eur.')';
+		 		
+		$this->db->query( $sql ); 
+		$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
+	}
+
+		function insertarmaestro_post(){
+		$input = $this->post();
+		$nu_documento      = $input["nu_documento"];         
+		$fe_documento      = $input["fe_documento"];         
+		$tp_documento      = $input["tp_documento"];   
+		$cd_servicio       = $input["cd_servicio"]; 
+		$oficina           = $input["oficina"];	
+		$cd_cliente        = $input["cd_cliente"];
+		$st_documento      = $input["st_documento"];
+		$cd_usuario        = $input["cd_usuario"];
+		$pc_iva            = $input["pc_iva"];
+		$mn_documento_bf   = $input["mn_documento_bf"];     
+		$baseimponible     = $input["baseimponible"];
+		$mn_iva_bf         = $input["mn_iva_bf"];
+		$exentos           = $input["exentos"]; 
+		$moneda            = $input["moneda"];
+        $cod_terminal      = $input["cod_terminal"];     					   		
+			
+		$sql = 'INSERT INTO dbo.admin_documentos (nu_documento,fe_documento,tp_documento,cd_servicio,oficina,cd_cliente,st_documento,cd_usuario,pc_iva,mn_documento_bf,baseimponible,mn_iva_bf,exentos,moneda,cod_terminal)
+		 		VALUES (\''.$nu_documento.'\',\''.$fe_documento.'\',\''.$tp_documento.'\',\''.$cd_servicio.'\',\''.$oficina.'\',\''.$cd_cliente.'\',\''.$st_documento.'\',\''.$cd_usuario.'\','.$pc_iva.','.$mn_documento_bf.','.$baseimponible.','.$mn_iva_bf.','.$exentos.',\''.$moneda.'\',\''.$cod_terminal.'\')';
+		 		
+		$this->db->query( $sql ); 
+		$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
+		
+		}
+
+		function insertardetalle_post(){
+			$input = $this->post();
+			$nu_documento   = $input["nu_documento"];         
+			$nu_renglon     = $input["nu_renglon"];         
+			$cd_concepto    = $input["cd_concepto"];   
+			$ds_concepto    = $input["ds_concepto"]; 
+			$nu_cantidad    = $input["nu_cantidad"];	
+			$mn_monto_bf    = $input["mn_monto_bf"];
+			$exentos        = $input["exentos"]; 
+			$pc_iva         = $input["pc_iva"];
+			$moneda         = $input["moneda"];
+			$tp_cambio      = $input["tp_cambio"];     
+			$cd_cuenta      = $input["cd_cuenta"];     					   		
+				
+			$sql = 'INSERT INTO dbo.admin_detdocumentos (nu_documento,nu_renglon,cd_concepto,ds_concepto,nu_cantidad,mn_monto_bf,exentos,pc_iva,moneda,tp_cambio,cd_cuenta)
+					 VALUES ( \''.$nu_documento.'\','.$nu_renglon.',\''.$cd_concepto.'\',\''.$ds_concepto.'\','.$nu_cantidad.','.$mn_monto_bf.','.$exentos.','.$pc_iva.',\''.$moneda.'\',\''.$tp_cambio.'\', \''.$cd_cuenta.'\')';
+					 
+			$this->db->query( $sql ); 
+			$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
+		}
+
+		function updatenuserial_post(){
+			$input = $this->post();
+			$nu_documento    = $input["nu_documento"];
+			$fe_documento    = $input["fe_documento"];
+			$nu_seniat       = $input["nu_seniat"];         
+			$st_documento    = $input["st_documento"];
+			$fe_desde        = $input["fe_desde"]; 
+			$fe_hasta        = $input["fe_hasta"];	
+			$ds_observaciones= $input["ds_observaciones"];
+			$cd_usuario      = $input["cd_usuario"]; 					   		
+				
+			$sql ='UPDATE dbo.admin_documentos SET fe_documento =\''.$fe_documento.'\',nu_seniat=\''.$nu_seniat.'\',st_documento=\''.$st_documento.'\',fe_desde=\''.$fe_desde.'\',fe_hasta=\''.$fe_hasta.'\',ds_observaciones=\''.$ds_observaciones.'\',cd_usuario=\''.$cd_usuario.'\'
+					WHERE nu_documento=\''.$nu_documento.'\'';
+			$this->db->query( $sql ); 
+			$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
+		}
 }
