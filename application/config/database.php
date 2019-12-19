@@ -75,8 +75,8 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'dblib:host=150.140.4.27:5100',
-	//'hostname' => 'dblib:host=192.168.10.30:5000',
+	//'hostname' => 'dblib:host=150.140.4.27:5100',
+	'hostname' => 'dblib:host=192.168.10.30:5000',
 	'username' => 'admindbo',
 	'password' => 'adminadm',
 	'database' => 'Admin',
