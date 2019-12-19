@@ -8,15 +8,17 @@ class AdminControl extends REST_Controller {
 
 	public function __construct() {
 		parent::__construct(); //Polimorfismo
-
-		$this->load->database(); //Establece la conexión con Sysbase
+    $this->load->model("MMapear", "Mapear");
+		//$this->load->database(); //Establece la conexión con Sysbase
   }
   
   public function insertvarios_post(){
-    $data = $this->Mapear->obtener($this->post());
+    $call = $this->post("call_back");
+    $data[0] = call;
+    $data[1] = $this->Mapear->obtener($this->post());
     $this->response($data, REST_Controller::HTTP_OK);
   }
-  
+
 	function listar_get(){
 
 		$sql = "SELECT pc_iva,ta_dollar,fecha_aplica_dol,mn_petro,fecha_aplica_ptr,mn_euro,fecha_aplica_eur

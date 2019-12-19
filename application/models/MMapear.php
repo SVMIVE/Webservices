@@ -14,14 +14,15 @@ class MMapear extends CI_Model {
         $i = 0;
 
         foreach($post as $cl => $val){
-            if ( $cl != "tbl") {
+            if ( $cl != "tbl" || $cl != "call_back") {
                 $coma = ($i > 0)?",":"";
                 $insert .= $coma . $cl ;
-
                 $values .= $coma . $this->getTipo( $val ) ;
                 $i++;
-            }else{
+            }elseif ($cl == "tbl") {
                $tabla = $val; 
+            }elseif ($cl == "call_back"){
+
             }
             
         }
@@ -50,8 +51,11 @@ class MMapear extends CI_Model {
                 $campo = "'" .  $variable . "'"; 
                  # code...
                 break;
+            case 'array':
+                
+                break;
             case 'object':
-                 # code...
+                
                 break;
             default:
                 # code...
