@@ -3,38 +3,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MMapear extends CI_Model {
 
+    public $n_doc = NULL;
+
     public function constructor(){
         parent::constructor();
 
     }
-	public function obtener( array $post, $n_doc = ''){
+	public function obtener( array $post){
         $insert = " ";
         $values = '';
         $tabla = 'S/T'; 
         $i = 0;
+        $one = '';
 
         foreach($post as $cl => $val){
             if ( $cl != "tbl" && $cl != "call_back") {
-                $coma = ($i > 0)?",":"";
-                $insert .= $coma . $cl ;
-                $valor = $cl == "nu_documento"?$n_doc: $val;
-                $values .= $coma . $this->getTipo( $valor ) ;
-                $i++;
+
+                if ( ! is_array($val) ){
+                    $coma = ($i > 0)?",":"";
+                    $insert .= $coma . $cl ;
+                    $valor = $cl == "nu_documento"?$this->n_doc: $val;
+    
+                    $values .= $coma . $this->getTipo( $valor );
+                    $i++;
+                }else{
+                    for($j=0; $j < count($val); $j++){
+                        $one .=  "; " . $this->obtener( $val[ $j ] );
+                    }
+                    
+                }       
+
             }elseif ($cl == "tbl") {
                $tabla = $val; 
-            }elseif ($cl == "call_back"){
-
             }
             
         }
 
-        $contenido = "INSERT INTO $tabla ( $insert ) VALUES (  $values ) ";
+        $contenido = "INSERT INTO $tabla ( $insert ) VALUES (  $values )";
 
-		return $contenido;
+		return $contenido .  $one;
     }
     
     public function getTipo( $variable ) {
-        $campo = '';
+        $campo = array();
         
         switch (gettype($variable)) {
             case 'integer':
@@ -53,7 +64,7 @@ class MMapear extends CI_Model {
                  # code...
                 break;
             case 'array':
-                
+                $campo = $this->obtener($variable);
                 break;
             case 'object':
                 
