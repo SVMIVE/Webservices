@@ -8,7 +8,7 @@ class Documento extends REST_Controller {
 	
 	public function __construct() {
 		parent::__construct(); //Polimorfismo
-		
+		$this->load->model("MMapear","Mapear");
 		$this->load->database(); //Establece la conexión con Sysbase		
 	}
 	/**
@@ -431,27 +431,8 @@ class Documento extends REST_Controller {
 	}
 
 		function insertarmaestro_post(){
-		$input = $this->post();
-		$nu_documento      = $input["nu_documento"];         
-		$fe_documento      = $input["fe_documento"];         
-		$tp_documento      = $input["tp_documento"];   
-		$cd_servicio       = $input["cd_servicio"]; 
-		$oficina           = $input["oficina"];	
-		$cd_cliente        = $input["cd_cliente"];
-		$st_documento      = $input["st_documento"];
-		$cd_usuario        = $input["cd_usuario"];
-		$pc_iva            = $input["pc_iva"];
-		$mn_documento_bf   = $input["mn_documento_bf"];     
-		$baseimponible     = $input["baseimponible"];
-		$mn_iva_bf         = $input["mn_iva_bf"];
-		$exentos           = $input["exentos"]; 
-		$moneda            = $input["moneda"];
-        $cod_terminal      = $input["cod_terminal"];     					   		
-			
-		$sql = 'INSERT INTO dbo.admin_documentos (nu_documento,fe_documento,tp_documento,cd_servicio,oficina,cd_cliente,st_documento,cd_usuario,pc_iva,mn_documento_bf,baseimponible,mn_iva_bf,exentos,moneda,cod_terminal)
-		 		VALUES (\''.$nu_documento.'\',\''.$fe_documento.'\',\''.$tp_documento.'\',\''.$cd_servicio.'\',\''.$oficina.'\',\''.$cd_cliente.'\',\''.$st_documento.'\',\''.$cd_usuario.'\','.$pc_iva.','.$mn_documento_bf.','.$baseimponible.','.$mn_iva_bf.','.$exentos.',\''.$moneda.'\',\''.$cod_terminal.'\')';
-		 		
-		$this->db->query( $sql ); 
+	
+		$this->db->query(  $this->Mapear->obtener($this->post()) ); 
 		$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
 		
 		}

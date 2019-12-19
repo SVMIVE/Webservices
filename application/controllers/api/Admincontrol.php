@@ -15,7 +15,7 @@ class AdminControl extends REST_Controller {
   public function insertvarios_post(){
     $metodo = $this->post("call_back");
     $n_documento = $this->Mapear->$metodo();
-    $data = $this->Mapear->obtener($this->post(),$n_documento);
+    $data[0] = $this->Mapear->obtener($this->post(),$n_documento[0]->documento);
     $this->response($data, REST_Controller::HTTP_OK);
   }
 
