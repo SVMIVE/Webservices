@@ -39,7 +39,7 @@ class MMapear extends CI_Model {
             
         }
 
-        $contenido = "INSERT INTO $tabla ( $insert ) VALUES (  $values )";
+        $contenido = "INSERT INTO $tabla ( $insert ) VALUES ( $values )";
 
 		return $contenido .  $one;
     }
