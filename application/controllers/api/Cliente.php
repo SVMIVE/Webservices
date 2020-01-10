@@ -8,8 +8,14 @@ class Cliente extends REST_Controller {
 	
 	public function __construct() {
 		parent::__construct(); //Polimorfismo
-		
+		$this->load->model("MMapear","Mapear");
 		$this->load->database(); //Establece la conexión con Sysbase		
+	}
+
+
+	function insert_post(){
+		$this->db->query(  $this->Mapear->obtener($this->post()) ); 
+		$this->response(['Item created successfully.'], REST_Controller::HTTP_OK);	
 	}
 
 	function listar_get(){	
@@ -135,9 +141,8 @@ class Cliente extends REST_Controller {
 		}**/
 		
 	}
-	/**
-	* Actualizar Clientes en sybase
-	
+	/*
+	* Actualizar Clientes en sybase	
 	function editar_post(){
 		$input = $this->post();
 		    	

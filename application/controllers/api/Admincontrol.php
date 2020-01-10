@@ -12,13 +12,22 @@ class AdminControl extends REST_Controller {
 		$this->load->database(); //Establece la conexión con Sysbase
   }
   
-  public function insertvarios_post(){
+  public function insertjoin_post(){
     $metodo = $this->post("call_back");
     $this->Mapear->n_doc = $this->Mapear->$metodo()[0]->documento;
     $data = $this->Mapear->obtener($this->post());
     $rs = $this->db->query( $data );
     $val['rs'] = $rs;
+    $val['sql'] = $data;
     $val['resp'] = $this->Mapear->n_doc;
+    $this->response($val, REST_Controller::HTTP_OK);
+  }
+
+  public function insertinto_post(){////
+    $data = $this->Mapear->obtener($this->post());
+    $rs = $this->db->query( $data );
+    $val['rs'] = $rs;
+    $val['sql'] = $data;
     $this->response($val, REST_Controller::HTTP_OK);
   }
 

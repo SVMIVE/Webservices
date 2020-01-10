@@ -43,7 +43,42 @@ class MMapear extends CI_Model {
 
 		return $contenido .  $one;
     }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function updategenerico( array $post){
+        $update = " ";
+        $values = '';
+        $tabla = 'S/T'; 
+        $i = 0;
+        $one = '';
+
+        foreach($post as $cl => $val){
+            if ( $cl != "tbl" && $cl != "call_back") {
+
+                if ( ! is_array($val) ){
+                    $coma = ($i > 0)?",":"";
+                    $update .= $coma . $cl ;
+                    $valor = $cl == "nu_documento"?$this->n_doc: $val;
     
+                    $values .= $coma . $this->getTipo( $valor );
+                    $i++;
+                }else{
+                    for($j=0; $j < count($val); $j++){
+                        $one .=  "; " . $this->obtener( $val[ $j ] );
+                    }
+                    
+                }       
+
+            }elseif ($cl == "tbl") {
+               $tabla = $val; 
+            }
+            
+        }
+
+        $contenido = "UPDATE $tabla SET ( $update  =  $values )";
+
+		return $contenido .  $one;
+    }
+ ///////////////////////////////////////////////////////////////////////////////////////////////////   
     public function getTipo( $variable ) {
         $campo = array();
         
@@ -57,6 +92,8 @@ class MMapear extends CI_Model {
                 break;
             case 'string':
                 $campo = "'" .  $variable . "'"; 
+                $elementos = explode("(", $variable);
+                if(count($elementos)>1) $campo = $variable;
                  # code...
                 break;
             case 'NULL':
@@ -75,9 +112,7 @@ class MMapear extends CI_Model {
         }
         return $campo;
     }
-
-
-
+    
     public function AutoIncremento($serie = "C"){   
         $sql = "EXEC sp_busca_corr_c" ;
         $data = $this->db->query( $sql );       
